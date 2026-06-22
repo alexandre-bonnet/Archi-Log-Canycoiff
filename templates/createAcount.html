@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Connexion</title>
+    <title>Create Acount</title>
     <style>
         body {
             font-family: Georgia, serif;
@@ -21,20 +21,30 @@
         }
         a { color: #1a5276; }
         a:hover { text-decoration: underline; }
+
+        .code-4 {
+            color : red
+        }
+
+        .code-2 {
+            color : green
+        }
+        .code-0 {
+            color : white
+        }
     </style>
 </head>
 <body>
-    <h1>Saisissez vos identifiants</h1>
-    <form action = "/gamesForm" method="GET" POST>
+    <h1>Créez un compte</h1>
+    <form action = "/createAcount" method="post">
         <label>Nom d'utilisateur : <br></label>
         <input type='text' name='user' id='user'> <br>
 
         <label>Mot de passe : <br></label>
-        <input type='text' name='mdp' id='mdp'> <br>
+        <input type='text' name='password' id='password'> <br>
+        <button type='submit'> envoyer </button>
     </form>
-    
-    <p>Pas encore de compte ?</p>
-    <a href="/createAcount">creer un compte</a> <br>
+    <p class = "code-{{codeProfile}}">account {{message}}</p>
     <a href="/">Retour</a>
 </body>
 </html>
