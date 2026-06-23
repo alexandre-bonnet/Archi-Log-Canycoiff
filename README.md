@@ -29,7 +29,7 @@ La table sortie contient les infos:
 id(PK)
 date_sortie 
 
-LAatable de liaison faire contient les infos: 
+La table de liaison faire contient les infos: 
 chien_id (FK chien)
 sortie_id (FK sortie)
 
