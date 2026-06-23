@@ -115,4 +115,4 @@ ORDER BY sortie.date_sortie
 for ligne in mycursor.fetchall():
     print(ligne)
 
-mycursor.close()
+mycursor.close() 
