@@ -1,5 +1,6 @@
 import mysql.connector
 import connection 
+
 mydb = connection.connect()
 mycursor = mydb.cursor(dictionary=True)
 
@@ -12,14 +13,13 @@ mycursor.execute("USE canycoiff")
 mycursor.execute("""CREATE TABLE IF NOT EXISTS client (   
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(50),
-    telephone VARCHAR(50))""")
+    telephone VARCHAR(50)),FOREIGN KEY (user_id) REFERENCES user(id))""")
 
 #table users (relié client)
 mycursor.execute( """
    CREATE TABLE IF NOT EXISTS USER(id int auto_increment primary key, username VARCHAR(50), password VARCHAR(50))
    """
 )
-
 
 #la table CHIEN (chaque chien appartient a un client)
 mycursor.execute("""CREATE TABLE IF NOT EXISTS chien (  

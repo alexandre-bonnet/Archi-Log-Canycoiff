@@ -5,7 +5,8 @@ Bienvenue dans notre salon de coiffure pour canidés !
 Description du projet: 
 On crée un salon de toiletteur pour chien. On peut se connecter avec son compte (ou en créer un si on n'en a pas) pour enregistrer son animal. De plus on peut l'inscrire à une sortie si l'on souhaite! 
 
-
+Nous gérons d'abord le user, ont peut se connecter depuis le site (pas de session encore)
+et on peut se créer un compte depuis le site (doit obéir à certaines normes)
 
 
 Pour les tables, on peut gérer: 
@@ -16,6 +17,12 @@ La table client contient les infos:
 id (PK)
 nom
 téléphone
+user_id (FK de user)
+
+La table user contient les infos:
+id (PK)
+username
+password
 
 La table chien contient les infos:
 id (PK)

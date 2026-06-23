@@ -10,16 +10,13 @@ def usernameConditions(pUsername):
     if(len(pUsername)>12):
         return 401
     if(userExists(pUsername)):
-        print("userExists = true")
-    print("===============")
-    if(userExists(pUsername)):
         print("error ; username already exists")
         return 400
-    return 200
+    return 201
 
 def addUser(pUsername,pPassword):
     userModel.addUser(pUsername,pPassword)
-    return 201
+    return 200
 
 def loginAccount(pUsername,pPassword):
     if(userExists(pUsername)):

@@ -32,6 +32,7 @@ def apropos():
 
 @app.route("/connexion",methods=["GET","POST"])
 def connexion():
+    userId = -1
     serverCode = 0
     serverResponse =""
     if request.method == "POST":
@@ -39,6 +40,9 @@ def connexion():
         password = request.form.get("password")
         serverCode = userServices.loginAccount(user,password)
         serverResponse = getServerResponse(serverCode)
+    if(serverCode==201):
+        userId = 1
+        #userId = userServices.getUserId(user)
     return render_template("connexion.html",message = serverResponse,codeProfile = serverCode//100)
 
 @app.route("/createAcount",methods=["GET","POST"])
@@ -52,6 +56,6 @@ def createAcount():
         print(password)
         serverCode = userServices.usernameConditions(user)
         if(serverCode==201):
-            userServices.addUser(user, password)
+            serverCode = userServices.addUser(user, password)
         serverResponse = getServerResponse(serverCode)
     return render_template("createAcount.html",message = serverResponse,codeProfile = serverCode//100)
