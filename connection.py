@@ -1,9 +1,18 @@
 import mysql.connector 
 
 def connect():
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="****",
-        database="canycoiff-db"
-    )
+    try :
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="L3G0MAN",
+            database="canycoiff-db"
+        )
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+    return mydb
