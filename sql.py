@@ -1,6 +1,8 @@
 import mysql.connector
 import connection 
-mycursor = connection.connect()
+mydb = connection.connect()
+mycursor = mydb.cursor(dictionary=True)
+
 
 
 mycursor.execute("CREATE DATABASE IF NOT EXISTS canycoiff") #on cree la bdd

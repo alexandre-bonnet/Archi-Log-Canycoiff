@@ -26,6 +26,11 @@ def getServerResponse(code):
 def index():
     return render_template("index.html")
 
+
+@app.route("/apropos")
+def apropos():
+    return render_template("apropos.html")
+
 @app.route("/connexion",methods=["GET"])
 def connexion():
     serverCode = 0

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A propos de nous - Le salon</title>
+    <style>
+        body {
+            font-family: Georgia, serif;
+            max-width: 600px;
+            margin: 60px auto;
+            background: #fafaf8;
+            color: #222;
+        }
+
+        h1 {
+            font-size: 2rem;
+            border-bottom: 2px solid #222;
+            padding-bottom: 8px;
+        }
+
+         h2 {
+            font-size: 2rem;
+            border-bottom: 2px solid #222;
+            padding-bottom: 8px;
+        }
+
+        .galerie  {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;}
+    
+    .galerie img {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+}  
+
+</style>
