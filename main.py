@@ -21,25 +21,18 @@ def getServerResponse(code):
     else :
         return ""
 
-
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/connexion",methods=["GET"])
+@app.route("/connexion",methods=["GET","POST"])
 def connexion():
     serverCode = 0
     serverResponse =""
     if request.method == "POST":
         user = request.form.get("user")
         password = request.form.get("password")
-        if(userServices.userExists(user)):
-            if(userServices.passwordValidity(user,password)):
-                serverCode = 201
-            else :
-                serverCode = 403
-        else :
-            serverCode = 402
+        serverCode = userServices.loginAccount(user,password)
         serverResponse = getServerResponse(serverCode)
     return render_template("connexion.html",message = serverResponse,codeProfile = serverCode//100)
 
@@ -53,7 +46,7 @@ def createAcount():
         print(user)
         print(password)
         serverCode = userServices.usernameConditions(user)
-        if(serverCode==200):
+        if(serverCode==201):
             userServices.addUser(user, password)
         serverResponse = getServerResponse(serverCode)
     return render_template("createAcount.html",message = serverResponse,codeProfile = serverCode//100)

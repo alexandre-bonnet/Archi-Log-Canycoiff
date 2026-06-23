@@ -21,17 +21,26 @@
         }
         a { color: #1a5276; }
         a:hover { text-decoration: underline; }
+        .code-4 {
+            color : red
+        }
+
+        .code-2 {
+            color : green
+        }
     </style>
 </head>
 <body>
     <h1>Saisissez vos identifiants</h1>
-    <form action = "/gamesForm" method="GET" POST>
+    <form action = "/connexion" method="post">
         <label>Nom d'utilisateur : <br></label>
         <input type='text' name='user' id='user'> <br>
 
         <label>Mot de passe : <br></label>
-        <input type='text' name='mdp' id='mdp'> <br>
+        <input type='text' name='password' id='password'> <br>
+        <button type='submit'> envoyer </button>
     </form>
+    <p class = "code-{{codeProfile}}">{{message}}</p>
     
     <p>Pas encore de compte ?</p>
     <a href="/createAcount">creer un compte</a> <br>
