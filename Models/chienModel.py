@@ -54,9 +54,8 @@ def getDogList(client_id):
     return dogList
 
 def addSortie(pDate_Sortie, pChien_id):
-    mydb = connection.connect()
-    mycursor = mydb.cursor()
-    mycursor.execute(
+    db = connexion.connect()
+    cursor.execute(
         "INSERT INTO sortie(date_sortie, chien_id) VALUES (%s, %s)",
         (pDate_Sortie, pChien_id))
 

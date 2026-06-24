@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter une sortie !</title>
+</head>
+<body>
+    h2> Ajouter une sortie !</h2>
+<form method="POST" action="/add-sortie">
+    <input type="date" name="date_sortie" placeholder="Date de la sortie" required>
+    <select name="chien_id" required> #choisir chien 
+        <option value="">-- Choisis ton chien --</option>
+            {% for c in chiens %} 
+                <option value="{{ c.id }}">
+                    {{ c.nom }}
+                </option>
+            {% endfor %}
+        </select>
+    <button type="submit">Ajouter une sortie !</button>
+
+
+</form>
+<p class = "code-{{codeProfile}}">{{message}}</p>
+{% endif %}
+</body>
+</html>
