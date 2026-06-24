@@ -13,11 +13,17 @@ mycursor.execute("USE canycoiff")
 mycursor.execute("""CREATE TABLE IF NOT EXISTS client (   
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(50),
-    telephone VARCHAR(50)),FOREIGN KEY (user_id) REFERENCES user(id))""")
+    telephone VARCHAR(50))""")
 
 #table users (relié client)
 mycursor.execute( """
-   CREATE TABLE IF NOT EXISTS USER(id int auto_increment primary key, username VARCHAR(50), password VARCHAR(50))
+   CREATE TABLE IF NOT EXISTS `USER` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50),
+    password VARCHAR(50),
+    client_id INT,
+    FOREIGN KEY (client_id) REFERENCES CLIENT(id)
+    );
    """
 )
 

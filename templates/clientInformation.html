@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <style>
+        body {
+            font-family: Georgia, serif;
+            max-width: 600px;
+            margin: 60px auto;
+            background: #fafaf8;
+            color: #222;
+        }
+        h1 { font-size: 2rem; border-bottom: 2px solid #222; padding-bottom: 8px; }
+        p { line-height: 1.7; }
+        code {
+            background: #eee;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        a { color: #1a5276; }
+        a:hover { text-decoration: underline; }
+        .code-4 {
+            color : red
+        }
+
+        .code-2 {
+            color : green
+        }
+    </style>
+</head>
+<body>
+    <h1>Saisissez vos informations {{test}}</h1>
+    <form action = "/fillClientInformation" method="post">
+        <label>Prénom : <br></label>
+        <input type='text' name='name' id='name'> <br>
+
+        <label>Numero de téléphone :  <br></label>
+        <input type='text' name='number' id='number'> <br>
+        <button type='submit'> envoyer </button>
+    </form>
+    <p class = "code-{{codeProfile}}">{{message}}</p>
+    <a href="/">Retour</a>
+</body>
+</html>

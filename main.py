@@ -5,6 +5,8 @@ import Services.userServices as userServices
 
 
 app = Flask(__name__)
+app.secret_key = "CanycoiffAdmin123"
+
 
 def getServerResponse(code):
     if(code==200):
@@ -21,6 +23,8 @@ def getServerResponse(code):
         return "Username not found"
     elif(code ==403):
         return "Password is wrong"
+    elif(code ==405):
+        return "Name too long (12 characters max)"
     else :
         return ""
 
@@ -28,14 +32,12 @@ def getServerResponse(code):
 def index():
     return render_template("index.html")
 
-
 @app.route("/apropos")
 def apropos():
     return render_template("apropos.html")
 
 @app.route("/connexion",methods=["GET","POST"])
 def connexion():
-    userId = -1
     serverCode = 0
     serverResponse =""
     if request.method == "POST":
@@ -43,10 +45,18 @@ def connexion():
         password = request.form.get("password")
         serverCode = userServices.loginAccount(user,password)
         serverResponse = getServerResponse(serverCode)
-    if(serverCode==201):
-        userId = 1
-        #userId = userServices.getUserId(user)
+        if(serverCode==201):
+            print("======USEr ID")
+            print(userServices.getUserId(user))
+            session["user_id"] = userServices.getUserId(user)
+            print("======= Client id")
+            print(userServices.getClientId(session["user_id"]))
+            if userServices.getClientId(session["user_id"]) is None:
+                return redirect(url_for("clientInformation"))
+        else:
+            session.clear()
     return render_template("connexion.html",message = serverResponse,codeProfile = serverCode//100)
+
 
 @app.route("/createAcount",methods=["GET","POST"])
 def createAcount():
@@ -63,6 +73,23 @@ def createAcount():
         serverResponse = getServerResponse(serverCode)
     return render_template("createAcount.html",message = serverResponse,codeProfile = serverCode//100)
 
+@app.route("/fillClientInformation",methods=["GET","POST"])
+def clientInformation():
+    if "user_id" in session:
+        user_id = session["user_id"]
+        print("====== ID")
+        print(user_id)
+        if request.method == "POST":
+            name = request.form.get("name")
+            number = request.form.get("number")
+            print(name)
+            print(number)
+            serverCode = userServices.clientConditions(name,number)
+            if(serverCode==201):
+                serverCode = userServices.addClient(session["user_id"],name, number)
+            serverResponse = getServerResponse(serverCode)
+        return render_template("clientInformation.html",test = userServices.getUsername(session["user_id"]))
+    return redirect(url_for("connexion"))
 
 @app.route("/espaceperso")
 def espaceperso():
