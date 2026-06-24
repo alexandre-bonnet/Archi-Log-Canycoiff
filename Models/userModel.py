@@ -56,7 +56,7 @@ def addClient(user_id,pName,pNumber):
     client_id = mycursor.lastrowid
     mycursor.execute("UPDATE USER SET client_id = %s WHERE id = %s",(client_id, user_id))
     mydb.commit()
-    print("user added")
+    print("client added")
     mycursor.close()
     return True
 

@@ -47,11 +47,7 @@ def connexion():
         serverCode = userServices.loginAccount(user,password)
         serverResponse = getServerResponse(serverCode)
         if(serverCode==201):
-            print("======USEr ID")
-            print(userServices.getUserId(user))
             session["user_id"] = userServices.getUserId(user)
-            print("======= Client id")
-            print(userServices.getClientId(session["user_id"]))
             if userServices.getClientId(session["user_id"]) is None:
                 return redirect(url_for("clientInformation"))
             return redirect(url_for("espaceperso"))
@@ -67,8 +63,6 @@ def createAcount():
     if request.method == "POST":
         user = request.form.get("user")
         password = request.form.get("password")
-        print(user)
-        print(password)
         serverCode = userServices.usernameConditions(user)
         if(serverCode==201):
             serverCode = userServices.addUser(user, password)
@@ -81,13 +75,9 @@ def clientInformation():
     serverResponse = ""
     if "user_id" in session:
         user_id = session["user_id"]
-        print("====== ID")
-        print(user_id)
         if request.method == "POST":
             name = request.form.get("name")
             number = request.form.get("number")
-            print(name)
-            print(number)
             serverCode = userServices.clientConditions(name,number)
             if(serverCode==201):
                 serverCode = userServices.addClient(session["user_id"],name, number)
@@ -98,13 +88,17 @@ def clientInformation():
 
 @app.route("/espaceperso",methods=["GET","POST"])
 def espaceperso():
-    
-    if request.method == "POST":
-        nom = request.form.get("nom")
-        race = request.form.get("race")
-        chienServices.addChien(nom,race,session["user_id"])
-    return render_template("espaceperso.html")
-
+    if "user_id" in session:
+        text = "Liste de vos chiens :"
+        if request.method == "POST":
+            nom = request.form.get("nom")
+            race = request.form.get("race")
+            chienServices.addChien(nom,race,session["user_id"])
+        dogList = chienServices.getDogList(session["user_id"])
+        if len(dogList)==0:
+            text = "Pas encore de chien enregistré"
+        return render_template("espaceperso.html",text=text,dogs = dogList)
+    return redirect(url_for("connexion"))
 
 @app.route("/add-sortie", methods=["POST"])
 def add_sortie():
