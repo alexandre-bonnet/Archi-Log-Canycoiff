@@ -2,48 +2,120 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/style.css"> 
+    <link rel="icon" type="image/x-icon" href="/static/CanyLogo.svg">
     <title>Espace client </title>
+    <style>
+        .code-4 {
+            color : red
+        }
+
+        .code-2 {
+            color : green
+        }
+
+        .title{
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+        div {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width : 100%;
+        }
+
+        .item-1 {
+            grid-area: 1 / 1 / 2 / 2;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid rgb(84, 108, 119);
+            background: #c0c5d6;
+        }
+
+        .item-2 {
+            grid-area: 1 / 2 / 2 / 3;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;   
+            border: 3px solid rgb(84, 108, 119);
+            border-left: 0px;
+            background: #c0c5d6;
+        }
+
+        .item-3 {
+            grid-area: 1 / 1 / 2 / 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid rgb(84, 108, 119);
+            border-top: 0px;
+        }
+
+        .item-4 {
+            grid-area: 1 / 2 / 2 / 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;   
+            border: 3px solid rgb(84, 108, 119);
+            border-top: 0px;
+            border-left: 0px;
+        }
+    </style>
 </head>
-<body>
-
-<h1>Bienvenue dans l'espace client !</h1>
-
-
-<h2>{{text}}</h2>
-<p>Nom / Race</p>
-{% for dog in dogs %}
-<p>{{dog.Nom}} / {{dog.Race}}</p>
-{% endfor %}
-
-<h2>Ajouter un chien</h2>
-<form method="POST" action="/espaceperso">
-
-    <input type="text" name="nom" placeholder="Nom du chien" required>
-    <input type="text" name="race" placeholder="Race" required>
-    <button type="submit">Ajouter un toutou ! </button>
-
-</form>
-<p class = "code-{{codeProfile}}">{{message}}</p>
-
-
-
-
-
-<h2> Ajouter une sortie !</h2>
-<form method="POST" action="/add-sortie">
-    <input type="date" name="date_sortie" placeholder="Date de la sortie" required>
-    <select name="chien_id" required> #choisir chien  
-         {% for chien in chien %} #on parcourt la liste des chiens encoyés par le serveur
-         <option value="{{ chien.id }}">
-                {{ chien.nom }}
-            </option>
+    <body>
+        <header>
+            <img src="/static/CanyLogo.svg" alt="logo"/>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/connexion"> Connexion</a>
+                <a href="/espaceperso"> Espace client </a>
+                <a href="/apropos"> Le salon</a>
+            </nav>
+        </header>
+        <main>
+            <h1>Bienvenue dans l'espace client !</h1>
+            <p class="title">{{text}}</p>
+            <div>
+                <p class="item-1">Nom</p>
+                <p class="item-2">Race</p>
+            </div>
+            {% for dog in dogs %}
+            <div>
+                <p class="item-3">{{dog.Nom}}</p>
+                <p class="item-4">{{dog.Race}}</p>
+            </div>
             {% endfor %}
-    </select>
-    <button type="submit">Ajouter une sortie !</button>
 
-</form>
-<p class = "code-{{codeProfile}}">{{message}}</p>
-<a href="/">Retour</a>
+            <p class="title">Ajouter un chien</p>
+            <form method="POST" action="/espaceperso">
 
-</body>
+                <input type="text" name="nom" placeholder="Nom du chien" required> <br>
+                <input type="text" name="race" placeholder="Race" required> <br>
+                <button type="submit">Ajouter un toutou ! </button>
+            </form>
+            <p class = "code-{{codeProfile}}">{{message}}</p>
+
+            <p class="title"> Ajouter une sortie !</p class="tile">
+            <form method="POST" action="/add-sortie">
+                <input type="date" name="date_sortie" placeholder="Date de la sortie" required>
+                <select name="chien_id" required> #choisir chien  
+                    {% for chien in chien %} #on parcourt la liste des chiens encoyés par le serveur
+                    <option value="{{ chien.id }}">
+                            {{ chien.nom }}
+                        </option>
+                        {% endfor %}
+                </select>
+                <button type="submit">Ajouter une sortie !</button>
+
+            </form>
+            <p class = "code-{{codeProfile}}">{{message}}</p>
+        </main>
+    </body>
 </html>
