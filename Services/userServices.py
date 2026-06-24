@@ -36,6 +36,9 @@ def addClient(user_id,pName,pNumber):
     userModel.addClient(user_id,pName,pNumber)
     return 200
 
+def getClientName(user_id):
+    return userModel.getClientName(user_id)
+
 def loginAccount(pUsername,pPassword):
     if(userExists(pUsername)):
         if(userModel.passwordValidity(pUsername,pPassword)):

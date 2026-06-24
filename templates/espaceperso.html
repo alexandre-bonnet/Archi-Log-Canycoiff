@@ -71,7 +71,9 @@
 </head>
     <body>
         <header>
-            <img src="/static/CanyLogo.svg" alt="logo"/>
+            <a href="/">
+                <img src="/static/CanyLogo.svg" alt="logo"/>
+            </a>
             <nav>
                 <a href="/">Home</a>
                 <a href="/connexion"> Connexion</a>
@@ -80,7 +82,7 @@
             </nav>
         </header>
         <main>
-            <h1>Bienvenue dans l'espace client !</h1>
+            <h1>Espace client de {{name}}</h1>
             <p class="title">{{text}}</p>
             <div>
                 <p class="item-1">Nom</p>
@@ -101,21 +103,9 @@
                 <button type="submit">Ajouter un toutou ! </button>
             </form>
             <p class = "code-{{codeProfile}}">{{message}}</p>
-
-            <p class="title"> Ajouter une sortie !</p class="tile">
-            <form method="POST" action="/add-sortie">
-                <input type="date" name="date_sortie" placeholder="Date de la sortie" required>
-                <select name="chien_id" required> #choisir chien  
-                    {% for chien in chien %} #on parcourt la liste des chiens encoyés par le serveur
-                    <option value="{{ chien.id }}">
-                            {{ chien.nom }}
-                        </option>
-                        {% endfor %}
-                </select>
-                <button type="submit">Ajouter une sortie !</button>
-
-            </form>
-            <p class = "code-{{codeProfile}}">{{message}}</p>
+            <nav>
+                <a class="title" href="/add-sortie"> Gérer mes sorties</a>
+            </nav>
         </main>
     </body>
 </html>

@@ -74,12 +74,13 @@ header{
     color:var(--TextColor);
 }
 
-header>img{
+header>a>img{
     width: 48px;
 }
   
 header>nav>a{
-  padding-left: 4px;
+  padding-left: 10px;
+  font-weight: 600;
   color: #041622;
 }
 

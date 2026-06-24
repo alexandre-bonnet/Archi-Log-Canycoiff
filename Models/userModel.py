@@ -40,6 +40,13 @@ def getClientId(user_id):
     mycursor.close()
     return client_id
 
+def getClientName(user_id):
+    mydb = connection.connect()
+    mycursor = mydb.cursor(dictionary=True)
+    mycursor.execute('''SELECT nom FROM CLIENT WHERE id = %s''',(getClientId(user_id),))
+    result = mycursor.fetchone()
+    mycursor.close()
+    return result["nom"]
 def addUser(pUsername,pPassword):
     mydb = connection.connect()
     mycursor = mydb.cursor()

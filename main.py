@@ -100,7 +100,9 @@ def espaceperso():
         dogList = chienServices.getDogList(session["user_id"])
         if len(dogList)==0:
             text = "Pas encore de chien enregistré"
-        return render_template("espaceperso.html",text=text,dogs = dogList)
+            dogList.append({'Nom':"-",'Race':"-"})
+        client_name=userServices.getClientName(session["user_id"])
+        return render_template("espaceperso.html",name=client_name,text=text,dogs = dogList)
     return redirect(url_for("connexion"))
 
 @app.route("/add-sortie", methods=["GET", "POST"])
