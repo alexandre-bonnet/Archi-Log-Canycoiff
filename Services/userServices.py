@@ -16,7 +16,7 @@ def usernameConditions(pUsername):
         return 400
     return 201
 
-def clientNameConditions(pName,pNumber):
+def clientConditions(pName,pNumber):
     if(len(pName)>20):
         return 405
     return 201

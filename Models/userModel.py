@@ -43,7 +43,7 @@ def getClientId(user_id):
 def addUser(pUsername,pPassword):
     mydb = connection.connect()
     mycursor = mydb.cursor()
-    mycursor.execute('''insert into USER VALUES (null,%s,%s)''',(pUsername,pPassword))
+    mycursor.execute('''insert into USER VALUES (null,%s,%s,null)''',(pUsername,pPassword))
     mydb.commit()
     print("user added")
     mycursor.close()
