@@ -1,11 +1,12 @@
 import mysql.connector 
+from mysql.connector import errorcode
 
 def connect():
     try :
         mydb = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="L3G0MAN",
+            password="",
             database="canycoiff"
         )
     except mysql.connector.Error as err:
