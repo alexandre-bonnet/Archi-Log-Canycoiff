@@ -2,6 +2,9 @@ import mysql.connector
 from flask import Flask, render_template,request,redirect,url_for,session
 import Services.userServices as userServices
 import Services.chienServices as chienServices
+
+
+
 #from flask_cors import CORS
 
 
@@ -102,25 +105,20 @@ def espaceperso():
 
 @app.route("/add-sortie", methods=["GET", "POST"])
 def add_sortie():
-    if "user_id" not in session:
-        return redirect(url_for("connexion"))
+    if "user_id" in session:
+        text = "Liste des sorties programmées :"
         
-    user_id = session["user_id"]
-    client_id = userServices.getClientId(user_id)
-    
-    
-    serverCode = 0
-    serverResponse = ""
-    
-    if request.method == "POST":
-        date_sortie = request.form.get("date_sortie")
-        chien_id = request.form.get("chien_id")
+        if request.method == "POST":
+            date_sortie = request.form.get("date_sortie")
+            chien_id = request.form.get("chien_id")
+            sortieService.addSortie(date_sortie, chien_id)
+            
+        sortieList = sortieService.getSortieList(session["user_id"])
         
-        chienModel.addSortie(date_sortie, chien_id)
+        if len(sortieList) == 0:
+            text = "Aucune sortie programmée pour le moment"
+            dogList = userServices.chienServices.getDogList(session["user_id"]) 
         
-        serverCode = 203
-        serverResponse = getServerResponse(serverCode)
+        return render_template("sortie.html", text=text, sorties=sortieList, chiens=dogList)
         
-    # On récupère les chiens pour le menu déroulant
-    mon_chien = chienModel.getChienByCliendId(client_id)
-    return render_template("sortie.html", message = serverResponse, codeProfile = serverCode//100, chiens=mon_chien)
+    return redirect(url_for("connexion"))
