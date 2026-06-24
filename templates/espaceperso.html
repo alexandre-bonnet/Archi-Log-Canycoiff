@@ -24,13 +24,30 @@
             </option>
         {% endfor %}
     </select>
-    <button type="submit">Ajouter chien</button>
+    <button type="submit">Ajouter un toutou ! </button>
 
 </form>
+<p class = "code-{{codeProfile}}">{{message}}</p>
 
-{% if message %}
-    <p>{{ message }}</p>
-{% endif %}
+
+
+
+
+<h2> Ajouter une sortie !</h2>
+<form method="POST" action="/add-sortie">
+    <input type="date" name="date_sortie" placeholder="Date de la sortie" required>
+    <select name="chien_id" required> #choisir chien  
+         {% for chien in chien %} #on parcourt la liste des chiens encoyés par le serveur
+         <option value="{{ chien.id }}">
+                {{ chien.nom }}
+            </option>
+            {% endfor %}
+    </select>
+    <button type="submit">Ajouter une sortie !</button>
+
+</form>
+<p class = "code-{{codeProfile}}">{{message}}</p>
+
 
 </body>
 </html>

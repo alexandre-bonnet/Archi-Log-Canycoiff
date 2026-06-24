@@ -4,8 +4,8 @@ def connect():
     try :
         mydb = mysql.connector.connect(
             host="localhost",
-            user="root",
-            password="",
+            user="roro",
+            password="r0r0",
             database="canycoiff"
         )
     except mysql.connector.Error as err:
@@ -15,4 +15,4 @@ def connect():
             print("Database does not exist")
         else:
             print(err)
-    return mydb
+    return mydb 

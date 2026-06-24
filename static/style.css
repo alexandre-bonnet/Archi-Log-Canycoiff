@@ -1,0 +1,31 @@
+body {
+  font-family: Georgia, serif;
+  max-width: 600px;
+  margin: 60px auto;
+  background: #fafaf8;
+  color: #222;
+}
+
+h1 {
+  font-size: 2rem;
+  border-bottom: 2px solid #222;
+  padding-bottom: 8px;
+}
+
+h2 {
+  font-size: 2rem;
+  border-bottom: 2px solid #222;
+  padding-bottom: 8px;
+}
+
+.galerie {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.galerie img {
+  object-fit: cover;
+  height: 200;
+  width: 200;
+}
