@@ -15,15 +15,6 @@
 
     <input type="text" name="nom" placeholder="Nom du chien" required>
     <input type="text" name="race" placeholder="Race" required>
-    <select name="client_id" required> #choisir propiro 
-        #parcourt la liste des clients envoyés par le serveur 
-        {% for client in clients %}
-        #chaque ckient devient une option 
-            <option value="{{ client.id }}">
-                {{ client.nom }}
-            </option>
-        {% endfor %}
-    </select>
     <button type="submit">Ajouter un toutou ! </button>
 
 </form>

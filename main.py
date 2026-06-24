@@ -1,6 +1,7 @@
 import mysql.connector
 from flask import Flask, render_template,request,redirect,url_for,session
 import Services.userServices as userServices
+import Services.chienServices as chienServices
 #from flask_cors import CORS
 
 
@@ -53,6 +54,7 @@ def connexion():
             print(userServices.getClientId(session["user_id"]))
             if userServices.getClientId(session["user_id"]) is None:
                 return redirect(url_for("clientInformation"))
+            return redirect(url_for("espaceperso"))
         else:
             session.clear()
     return render_template("connexion.html",message = serverResponse,codeProfile = serverCode//100)
@@ -75,6 +77,8 @@ def createAcount():
 
 @app.route("/fillClientInformation",methods=["GET","POST"])
 def clientInformation():
+    serverCode = 0
+    serverResponse = ""
     if "user_id" in session:
         user_id = session["user_id"]
         print("====== ID")
@@ -87,29 +91,23 @@ def clientInformation():
             serverCode = userServices.clientConditions(name,number)
             if(serverCode==201):
                 serverCode = userServices.addClient(session["user_id"],name, number)
-            serverResponse = getServerResponse(serverCode)
-        return render_template("clientInformation.html",test = userServices.getUsername(session["user_id"]))
+                return redirect(url_for("espaceperso"))
+        serverResponse = getServerResponse(serverCode)
+        return render_template("clientInformation.html",test = userServices.getUsername(session["user_id"]),message = serverResponse,codeProfile = serverCode//100)
     return redirect(url_for("connexion"))
 
-@app.route("/espaceperso")
+@app.route("/espaceperso",methods=["GET","POST"])
 def espaceperso():
+    
+    if request.method == "POST":
+        nom = request.form.get("nom")
+        race = request.form.get("race")
+        chienServices.addChien(nom,race,session["user_id"])
     return render_template("espaceperso.html")
-
-
-@app.route("/add-chien", methods=["POST"])
-def add_chien():
-
-#on recupere les donnees 
-    nom = request.form.get("nom")
-    race = request.form.get("race")
-    client_id = request.form.get("client_id")
-    return redirect(url_for("espaceperso"))
-
 
 
 @app.route("/add-sortie", methods=["POST"])
 def add_sortie():
-
 #on recupere les donnees 
     date_sortie= request.form.get("date_sortie")
     chien_id = request.form.get("chien_id")
