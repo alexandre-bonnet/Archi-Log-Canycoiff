@@ -108,7 +108,7 @@ def add_sortie():
     user_id = session["user_id"]
     client_id = userServices.getClientId(user_id)
     
-    # Même initialisation que tes autres routes
+    
     serverCode = 0
     serverResponse = ""
     
