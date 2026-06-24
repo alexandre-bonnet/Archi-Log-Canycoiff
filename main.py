@@ -1,5 +1,5 @@
 import mysql.connector
-from flask import Flask, render_template,request,redirect,session,url_for
+from flask import Flask, render_template,request,redirect,url_for
 import Services.userServices as userServices
 #from flask_cors import CORS
 
@@ -13,6 +13,8 @@ def getServerResponse(code):
         return "Account created !"
     elif(code ==201):
         return "Welcome to your account !"
+    elif(code ==202):
+        return "Toutou ajouté !"
     elif(code ==400):
         return "Username already in use"
     elif(code == 401):
@@ -101,17 +103,14 @@ def add_chien():
     nom = request.form.get("nom")
     race = request.form.get("race")
     client_id = request.form.get("client_id")
-#connexion bdd
-    db = connexion.connect()
-    cursor = db.cursor()
+    return redirect(url_for("espaceperso"))
 
-    cursor.execute(
-        "INSERT INTO chien(nom, race, client_id) VALUES (%s, %s, %s)",
-        (nom, race, client_id)
-    )
 
-    db.commit()
-    cursor.close()
-    db.close()
 
-    return "Toutou ajouté! <a href='/espaceperso'>Retour</a>"
+@app.route("/add-sortie", methods=["POST"])
+def add_sortie():
+
+#on recupere les donnees 
+    date_sortie= request.form.get("date_sortie")
+    chien_id = request.form.get("chien_id")
+    return redirect(url_for("espaceperso"))
