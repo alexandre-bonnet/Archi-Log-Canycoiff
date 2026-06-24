@@ -3,6 +3,7 @@ from flask import Flask, render_template,request
 import Services.userServices as userServices
 #from flask_cors import CORS
 
+
 app = Flask(__name__)
 
 def getServerResponse(code):
@@ -59,3 +60,31 @@ def createAcount():
             serverCode = userServices.addUser(user, password)
         serverResponse = getServerResponse(serverCode)
     return render_template("createAcount.html",message = serverResponse,codeProfile = serverCode//100)
+
+
+@app.route("/espaceperso")
+def espaceperso():
+    return render_template("espaceperso.html")
+
+
+@app.route("/add-chien", methods=["POST"])
+def add_chien():
+
+#on recupere les donnees 
+    nom = request.form.get("nom")
+    race = request.form.get("race")
+    client_id = request.form.get("client_id")
+#connexion bdd
+    db = connexion.connect()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "INSERT INTO chien(nom, race, client_id) VALUES (%s, %s, %s)",
+        (nom, race, client_id)
+    )
+
+    db.commit()
+    cursor.close()
+    db.close()
+
+    return "Toutou ajouté! <a href='/espaceperso'>Retour</a>"
