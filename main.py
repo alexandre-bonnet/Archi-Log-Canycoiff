@@ -107,10 +107,27 @@ def add_chien():
 
 
 
-@app.route("/add-sortie", methods=["POST"])
+@app.route("/add-sortie", methods=["GET", "POST"])
 def add_sortie():
-
-#on recupere les donnees 
-    date_sortie= request.form.get("date_sortie")
-    chien_id = request.form.get("chien_id")
-    return redirect(url_for("espaceperso"))
+    if "user_id" not in session:
+        return redirect(url_for("connexion"))
+        
+    user_id = session["user_id"]
+    client_id = userServices.getClientId(user_id)
+    
+    # Même initialisation que tes autres routes
+    serverCode = 0
+    serverResponse = ""
+    
+    if request.method == "POST":
+        date_sortie = request.form.get("date_sortie")
+        chien_id = request.form.get("chien_id")
+        
+        chienModel.addSortie(date_sortie, chien_id)
+        
+        serverCode = 203
+        serverResponse = getServerResponse(serverCode)
+        
+    # On récupère les chiens pour le menu déroulant
+    mon_chien = chienModel.getChienByCliendId(client_id)
+    return render_template("sortie.html", message = serverResponse, codeProfile = serverCode//100, chiens=mon_chien)
