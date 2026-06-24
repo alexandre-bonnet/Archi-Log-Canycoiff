@@ -9,21 +9,17 @@
 <h1>Bienvenue dans l'espace client !</h1>
 
 
-<h2>Ajouter un chien</h2>
+<h2>{{text}}</h2>
+<p>Nom / Race</p>
+{% for dog in dogs %}
+<p>{{dog.Nom}} / {{dog.Race}}</p>
+{% endfor %}
 
-<form method="POST" action="/add-chien">
+<h2>Ajouter un chien</h2>
+<form method="POST" action="/espaceperso">
 
     <input type="text" name="nom" placeholder="Nom du chien" required>
     <input type="text" name="race" placeholder="Race" required>
-    <select name="client_id" required> #choisir propiro 
-        #parcourt la liste des clients envoyés par le serveur 
-        {% for client in clients %}
-        #chaque ckient devient une option 
-            <option value="{{ client.id }}">
-                {{ client.nom }}
-            </option>
-        {% endfor %}
-    </select>
     <button type="submit">Ajouter un toutou ! </button>
 
 </form>
@@ -47,7 +43,7 @@
 
 </form>
 <p class = "code-{{codeProfile}}">{{message}}</p>
-
+<a href="/">Retour</a>
 
 </body>
 </html>

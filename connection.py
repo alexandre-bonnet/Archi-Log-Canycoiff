@@ -4,8 +4,8 @@ def connect():
     try :
         mydb = mysql.connector.connect(
             host="localhost",
-            user="roro",
-            password="r0r0",
+            user="root",
+            password="L3G0MAN",
             database="canycoiff"
         )
     except mysql.connector.Error as err:

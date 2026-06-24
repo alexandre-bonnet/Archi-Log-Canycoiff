@@ -2,8 +2,6 @@ import Models.userModel as userModel
 
 def userExists(pUsername):
     count = userModel.getUserCount(pUsername)
-    print("==== COUNT")
-    print(count)
     if(count>0):
         return True
     return False
@@ -37,7 +35,6 @@ def getClientId(user_id):
 def addClient(user_id,pName,pNumber):
     userModel.addClient(user_id,pName,pNumber)
     return 200
-
 
 def loginAccount(pUsername,pPassword):
     if(userExists(pUsername)):
