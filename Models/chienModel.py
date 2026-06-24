@@ -15,7 +15,9 @@ def addChien(pNom, pRace,pClient_id):
     return 
 
 
-def addSortie(pDate_Sortie, pChien_id)
+def addSortie(pDate_Sortie, pChien_id):
+    db = connexion.connect()
+    cursor = db.cursor()
     cursor.execute(
         "INSERT INTO sortie(date_sortie, chien_id) VALUES (%s, %s)",
         (pDate_Sortie, pChien_id))
