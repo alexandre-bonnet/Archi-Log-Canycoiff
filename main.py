@@ -3,6 +3,7 @@ from flask import Flask, render_template,request,redirect,url_for,session
 import Services.userServices as userServices
 import Services.chienServices as chienServices
 import Services.sortieServices as sortieServices
+import os 
 
 
 
@@ -109,7 +110,10 @@ def espaceperso():
         if request.method == "POST":
             nom = request.form.get("nom")
             race = request.form.get("race")
-            chienServices.addChien(nom,race,session["user_id"])
+            photo = request.files["photo"]
+            filename = photo.filename
+            photo.save(os.path.join("static", filename))
+            chienServices.addChien(nom,race,session["user_id"],filename)
         dogList = chienServices.getDogList(session["user_id"])
         if len(dogList)==0:
             text = "Pas encore de chien enregistré"
@@ -125,7 +129,7 @@ def add_sortie():
         if request.method == "POST":
             date_sortie = request.form.get("date_sortie")
             chien_id = request.form.get("chien_id")
-            print("====chienId")
+            print("chienId")
             print(chien_id)
             sortieServices.addSortie(date_sortie, chien_id)
             
