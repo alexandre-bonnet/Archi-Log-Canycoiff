@@ -1,10 +1,10 @@
 import mysql.connector 
 import connection 
 
-def addChien(pNom, pRace,pClient_id):
+def addChien(pNom, pRace,pClient_id, pPhoto):
     mydb = connection.connect()
     mycursor = mydb.cursor()
-    mycursor.execute("INSERT INTO chien(nom, race, client_id) VALUES (%s, %s, %s)",(pNom, pRace, pClient_id))
+    mycursor.execute("INSERT INTO chien(nom, race, client_id, photo) VALUES (%s, %s, %s, %s)",(pNom, pRace, pClient_id, pPhoto))
 
     mydb.commit()
     mycursor.close()
@@ -48,7 +48,7 @@ def getDogList(client_id):
     for dogId in allDogIds:
         mycursor.execute("SELECT * FROM CHIEN WHERE id = %s",(dogId,))
         result = mycursor.fetchone()
-        dogList.append({'id':dogId,'Nom':result["nom"],'Race':result["race"]})
+        dogList.append({'id':dogId,'Nom':result["nom"],'Race':result["race"], 'Photo':result["photo"]})
     mycursor.close()
     mydb.close()
     return dogList

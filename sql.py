@@ -32,6 +32,7 @@ mycursor.execute("""CREATE TABLE IF NOT EXISTS chien (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(50),
     race VARCHAR(50),
+    photo VARCHAR(50),
     client_id INT,
     FOREIGN KEY (client_id) REFERENCES client(id))""") #clé étrangère de client
 
