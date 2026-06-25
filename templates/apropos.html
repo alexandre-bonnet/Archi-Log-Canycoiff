@@ -4,21 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css"> 
-    <title>A propos de nous - Le salon</title>
+    <title>Le salon</title>
 </head>
     <body>
         <header>
-            <img src="/static/CanyLogo.svg" alt="logo"/>
+            <a href="/">
+                <img src="/static/CanyLogo.svg" alt="logo"/>
+            </a>
             <nav>
                 <a href="/">Home</a>
-                <a href="/connexion"> Connexion</a>
+                <a href="/connexion"> {{statusHtml}}</a>
                 <a href="/espaceperso"> Espace client </a>
                 <a href="/apropos"> Le salon</a>
             </nav>
         </header>
         <main>
             <h1>Prix d'or du salon des canidés depuis 1960</h1>
-            <p>Canycoiff saura sublimer votre chien et éclairer sa lanterne!</p>
+            <p class="title">Canycoiff saura sublimer votre chien et éclairer sa lanterne !</p>
 
             <div class="galerie">
                 <img src="../static/chien moche 2.png">
