@@ -122,18 +122,14 @@ def espaceperso():
 def add_sortie():
     if "user_id" in session:
         text = "Liste des sorties programmées :"
-        
         if request.method == "POST":
             date_sortie = request.form.get("date_sortie")
             chien_id = request.form.get("chien_id")
             sortieService.addSortie(date_sortie, chien_id)
             
         sortieList = sortieService.getSortieList(session["user_id"])
-        
         if len(sortieList) == 0:
             text = "Aucune sortie programmée pour le moment"
             dogList = userServices.chienServices.getDogList(session["user_id"]) 
-        
         return render_template("sortie.html", text=text, sorties=sortieList, chiens=dogList)
-        
     return redirect(url_for("connexion"))
