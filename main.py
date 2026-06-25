@@ -26,6 +26,10 @@ def getServerResponse(code):
         return "Welcome to your account !"
     elif(code ==202):
         return "Toutou ajouté !"
+    elif(code ==204):
+        return "Chien ajouté à la sortie"
+    elif(code ==205):
+        return "Nouvelle sortie crée"
     elif(code ==400):
         return "Username already in use"
     elif(code == 401):
@@ -36,6 +40,10 @@ def getServerResponse(code):
         return "Password is wrong"
     elif(code ==405):
         return "Name too long (12 characters max)"
+    elif(code ==407):
+        return "Date has already passed"
+    elif(code ==408):
+        return "Date too far in the future"
     else :
         return ""
 
@@ -122,8 +130,10 @@ def espaceperso():
         return render_template("espaceperso.html",statusHtml=getStatus(),name=client_name,text=text,dogs = dogList)
     return redirect(url_for("connexion"))
 
-@app.route("/add-sortie", methods=["GET", "POST"])
+@app.route("/add-sortie", methods=["GET","POST"])
 def add_sortie():
+    serverCode = 0
+    serverResponse = ""
     if "user_id" in session:
         text = "Liste des sorties programmées :"
         if request.method == "POST":
@@ -131,13 +141,18 @@ def add_sortie():
             chien_id = request.form.get("chien_id")
             print("chienId")
             print(chien_id)
-            sortieServices.addSortie(date_sortie, chien_id)
-            
+            serverCode = sortieServices.checkDate(date_sortie)
+            if(serverCode==203):
+                serverCode = sortieServices.addSortie(date_sortie, chien_id)
+        #sortieList = [] 
         sortieList = sortieServices.getSortieList(session["user_id"])
+        for sortie in sortieList:
+            print(sortie)
         if len(sortieList) == 0:
             text = "Aucune sortie programmée pour le moment"
-        dogList = chienServices.getDogList(session["user_id"]) 
-        for dog in dogList:
-            print(dog)
-        return render_template("sortie.html", text=text, sorties=sortieList, chiens=dogList)
+        dogList = chienServices.getDogList(session["user_id"])
+        serverResponse = getServerResponse(serverCode)
+        return render_template("sortie.html",statusHtml=getStatus(),
+                               text=text, sorties=sortieList, chiens=dogList,
+                               message = serverResponse,codeProfile = serverCode//100)
     return redirect(url_for("connexion"))

@@ -99,16 +99,14 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `sortie`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sortie` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date_sortie` date DEFAULT NULL,
-  `chien_id` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `sortie_ibfk_1` (`chien_id`),
-  CONSTRAINT `sortie_ibfk_1` FOREIGN KEY (`chien_id`) REFERENCES `chien` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
+CREATE TABLE `sortie` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `date_sortie` DATE DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*!40101 SET character_set_client = @saved_cs_client */;
 --
 -- Dumping data for table `sortie`
 --
