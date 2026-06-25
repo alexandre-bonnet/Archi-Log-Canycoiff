@@ -25,6 +25,10 @@ def getServerResponse(code):
         return "Welcome to your account !"
     elif(code ==202):
         return "Toutou ajouté !"
+    elif(code ==204):
+        return "Chien ajouté à la sortie"
+    elif(code ==205):
+        return "Nouvelle sortie crée"
     elif(code ==400):
         return "Username already in use"
     elif(code == 401):
@@ -122,7 +126,7 @@ def espaceperso():
         return render_template("espaceperso.html",statusHtml=getStatus(),name=client_name,text=text,dogs = dogList)
     return redirect(url_for("connexion"))
 
-@app.route("/add-sortie", methods=["GET", "POST"])
+@app.route("/add-sortie", methods=["GET","POST"])
 def add_sortie():
     serverCode = 0
     serverResponse = ""
@@ -135,13 +139,14 @@ def add_sortie():
             print(chien_id)
             serverCode = sortieServices.checkDate(date_sortie)
             if(serverCode==203):
-                sortieServices.addSortie(date_sortie, chien_id)
-            
-        sortieList=[]
-        #sortieList = sortieServices.getSortieList(session["user_id"])
+                serverCode = sortieServices.addSortie(date_sortie, chien_id)
+        #sortieList = [] 
+        sortieList = sortieServices.getSortieList(session["user_id"])
+        for sortie in sortieList:
+            print(sortie)
         if len(sortieList) == 0:
             text = "Aucune sortie programmée pour le moment"
-        dogList = chienServices.getDogList(session["user_id"]) 
+        dogList = chienServices.getDogList(session["user_id"])
         serverResponse = getServerResponse(serverCode)
         return render_template("sortie.html",statusHtml=getStatus(),
                                text=text, sorties=sortieList, chiens=dogList,

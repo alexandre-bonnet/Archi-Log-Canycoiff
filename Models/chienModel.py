@@ -53,18 +53,6 @@ def getDogList(client_id):
     mydb.close()
     return dogList
 
-def addSortie(pDate_Sortie, pChien_id):
-    db = connexion.connect()
-    cursor.execute(
-        "INSERT INTO sortie(date_sortie, chien_id) VALUES (%s, %s)",
-        (pDate_Sortie, pChien_id))
-
-
-    mydb.commit()
-    mycursor.close()
-    mydb.close()
-    return 
-
 
 
 

@@ -43,6 +43,18 @@
                 <button type="submit">Ajouter une sortie !</button>
             </form>
             <p class = "code-{{codeProfile}}">{{message}}</p>
+
+            <h2> Consulter vos sorties</h2>
+            <form method="POST" action="/add-sortie">
+                <select name="chien_id" required>
+                    <option value="">-- Choisis ta sortie --</option>
+                        {% for sortie in sorties %} 
+                            <option value={{sortie.id}}>
+                                {{sortie.Date}}
+                            </option>
+                        {% endfor %}
+                    </select>
+            </form>
         </main>
     </body>
 </html>

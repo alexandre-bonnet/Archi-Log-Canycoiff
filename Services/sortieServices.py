@@ -16,18 +16,24 @@ def checkDate(pDateString):
     return 203
 
 def addSortie(pDate_Sortie, pChien_id):
+    num = 204
     sortie_id = sortieModel.getSortieId(pDate_Sortie)
     if (sortie_id is None):
         sortieModel.addSortie(pDate_Sortie)
         print("sortie added")
         sortie_id = sortieModel.getSortieId(pDate_Sortie)
+        num = 205
     sortieModel.addDogToSortie(pChien_id,sortie_id)
-    return 203
+    return num
 
 def getSortieList(user_id):
     # On récupère le client_id grâce au service utilisateur
     client_id = userServices.getClientId(user_id)
-    sortieList = sortieModel.getSortieList(client_id)
+    sortieList = sortieModel.getSortieList(userServices.getClientId(user_id))
     for sortie in sortieList:
         print(sortie)
     return sortieList
+
+def getMesChiensParSortie(user_id,Sortie_id):
+    chiensParSortie = []
+    return chiensParSortie
