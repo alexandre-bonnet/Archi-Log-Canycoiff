@@ -45,16 +45,74 @@
             <p class = "code-{{codeProfile}}">{{message}}</p>
 
             <h2> Consulter vos sorties</h2>
-            <form method="POST" action="/add-sortie">
-                <select name="chien_id" required>
+            <div>
+                <select id="sortie-select" name="sortie_id">
                     <option value="">-- Choisis ta sortie --</option>
                         {% for sortie in sorties %} 
-                            <option value={{sortie.id}}>
+                            <option value={{sortie.Id}}>
                                 {{sortie.Date}}
                             </option>
                         {% endfor %}
-                    </select>
-            </form>
+                </select>
+            </div>
+            <div id="sortie-participants">
+                <h3>Chiens participants</h3>
+                <table id="participants-table" style="width:100%;border-collapse:collapse;">
+                    <thead>
+                        <tr>
+                            <th style="border:1px solid #546c77;padding:8px;">Nom</th>
+                            <th style="border:1px solid #546c77;padding:8px;">Race</th>
+                            <th style="border:1px solid #546c77;padding:8px;">Photo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="3" style="text-align:center;padding:12px;">Choisissez une sortie pour voir les chiens</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </main>
+        <script>
+            async function loadSortieDogs(sortieId){
+                const tbody = document.querySelector('#participants-table tbody');
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:12px;">Chargement...</td></tr>';
+                if(!sortieId){
+                    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:12px;">Choisissez une sortie pour voir les chiens</td></tr>';
+                    return;
+                }
+                try{
+                    const res = await fetch(`/api/sorties/${sortieId}/dogs`, {credentials:'same-origin'});
+                    const json = await res.json();
+                    if(!res.ok){
+                        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;padding:12px;">${json.error || json.message || 'Erreur'}</td></tr>`;
+                        return;
+                    }
+                    if(!json.dogs || json.dogs.length === 0){
+                        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:12px;">Aucun chien n\'est inscrit à cette sortie</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = '';
+                    json.dogs.forEach(dog => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td style="border:1px solid #546c77;padding:8px;">${dog.Nom || ''}</td>
+                            <td style="border:1px solid #546c77;padding:8px;">${dog.Race || ''}</td>
+                            <td style="border:1px solid #546c77;padding:8px;text-align:center;"><img src="/static/${dog.Photo || ''}" style="max-width:120px;max-height:80px;object-fit:cover;border-radius:4px;" /></td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }catch(err){
+                    console.error(err);
+                    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:12px;">Erreur de chargement</td></tr>';
+                }
+            }
+            document.addEventListener('DOMContentLoaded', ()=>{
+                const select = document.getElementById('sortie-select');
+                if(select){
+                    select.addEventListener('change', ()=>{
+                        loadSortieDogs(select.value);
+                    });
+                }
+            });
+        </script>
     </body>
 </html>

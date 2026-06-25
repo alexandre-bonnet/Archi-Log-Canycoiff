@@ -54,8 +54,22 @@ def getDogList(client_id):
     return dogList
 
 
+def isDogOwnedByClient(dog_id, client_id):
+    mydb = connection.connect()
+    mycursor = mydb.cursor(dictionary=True)
+    mycursor.execute("SELECT id FROM CHIEN WHERE id = %s AND client_id = %s", (dog_id, client_id))
+    result = mycursor.fetchone()
+    mycursor.close()
+    mydb.close()
+    return result is not None
 
 
-  
-
-   
+def removeDog(pChien_id):
+    mydb = connection.connect()
+    mycursor = mydb.cursor()
+    mycursor.execute("DELETE FROM faire WHERE chien_id = %s", (pChien_id,))
+    mycursor.execute("DELETE FROM CHIEN WHERE id = %s", (pChien_id,))
+    mydb.commit()
+    mycursor.close()
+    mydb.close()
+    return 200

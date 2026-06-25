@@ -56,7 +56,35 @@ def getSortieId(pDate_Sortie):
     result = mycursor.fetchone()
     if result is None:
         print("===========Sortie Don't Exist")
+        mycursor.close()
+        mydb.close()
         return None
     id = result["id"]
     mycursor.close()
+    mydb.close()
     return id
+
+
+def getDogsForSortie(client_id, sortie_id):
+    mydb = connection.connect()
+    mycursor = mydb.cursor(dictionary=True)
+    query = """
+        SELECT c.id, c.Nom, c.Race, c.Photo
+        FROM chien c
+        JOIN faire f ON c.id = f.chien_id
+        WHERE f.sortie_id = %s AND c.client_id = %s
+        ORDER BY c.Nom ASC
+    """
+    mycursor.execute(query, (sortie_id, client_id))
+    results = mycursor.fetchall()
+    dogList = []
+    for row in results:
+        dogList.append({
+            'id': row['id'],
+            'Nom': row['Nom'],
+            'Race': row['Race'],
+            'Photo': row['Photo']
+        })
+    mycursor.close()
+    mydb.close()
+    return dogList

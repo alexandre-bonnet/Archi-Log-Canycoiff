@@ -88,7 +88,36 @@
         width: 50px;
         height: 50px;
         object-fit: cover;
-        
+      }
+
+      .dog-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      .dog-table th,
+      .dog-table td {
+        border: 1px solid rgb(84, 108, 119);
+        padding: 10px;
+        text-align: center;
+      }
+
+      .dog-table th {
+        background: #c0c5d6;
+      }
+
+      .delete-button {
+        background: #d9534f;
+        border: none;
+        color: white;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      .delete-button:hover {
+        background: #c9302c;
       }
     </style>
   </head>
@@ -108,22 +137,37 @@
     <main>
       <h1>Espace client de {{name}}</h1>
       <p class="title">{{text}}</p>
-      <div>
-        <p class="item-1">Nom</p>
-        <p class="item-2">Race</p>
-        <p class="item-3">Photo</p>
-      </div>
-      {% for dog in dogs %}
-      <div>
-        <p class="item-4">{{dog.Nom}}</p>
-        <p class="item-5">{{dog.Race}}</p>
-        <p class="item-6">
-          <img src="/static/{{dog.Photo}}" class="chien-photo"/>
-        </p>
-      </div>
-      {% endfor %}
+      <table class="dog-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Race</th>
+            <th>Photo</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for dog in dogs %}
+          <tr>
+            <td>{{dog.Nom}}</td>
+            <td>{{dog.Race}}</td>
+            <td>
+              {% if dog.Photo %}
+              <img src="/static/{{dog.Photo}}" class="chien-photo" />
+              {% endif %}
+            </td>
+            <td>
+              <form method="POST" action="/delete-chien" style="margin:0;">
+                <input type="hidden" name="dog_id" value="{{dog.id}}" />
+                <button type="submit" class="delete-button">Supprimer</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-      <p class="title">Ajouter un chien</p>
+      <p class="title">Ajouter un chien</p
       <form method="POST" action="/espaceperso" enctype="multipart/form-data">
         <input
           type="text" name="nom" placeholder="Nom du chien" equired/><br />

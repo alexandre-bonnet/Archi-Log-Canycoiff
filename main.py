@@ -1,5 +1,5 @@
 import mysql.connector
-from flask import Flask, render_template,request,redirect,url_for,session
+from flask import Flask, render_template,request,redirect,url_for,session,jsonify
 import Services.userServices as userServices
 import Services.chienServices as chienServices
 import Services.sortieServices as sortieServices
@@ -125,10 +125,21 @@ def espaceperso():
         dogList = chienServices.getDogList(session["user_id"])
         if len(dogList)==0:
             text = "Pas encore de chien enregistré"
-            dogList.append({'Nom':"-",'Race':"-"})
         client_name=userServices.getClientName(session["user_id"])
         return render_template("espaceperso.html",statusHtml=getStatus(),name=client_name,text=text,dogs = dogList)
     return redirect(url_for("connexion"))
+
+@app.route('/delete-chien', methods=['POST'])
+def delete_chien():
+    if 'user_id' not in session:
+        return redirect(url_for('connexion'))
+    dog_id = request.form.get('dog_id')
+    try:
+        dog_id = int(dog_id)
+    except (TypeError, ValueError):
+        return redirect(url_for('espaceperso'))
+    chienServices.deleteChien(session['user_id'], dog_id)
+    return redirect(url_for('espaceperso'))
 
 @app.route("/add-sortie", methods=["GET","POST"])
 def add_sortie():
@@ -156,3 +167,10 @@ def add_sortie():
                                text=text, sorties=sortieList, chiens=dogList,
                                message = serverResponse,codeProfile = serverCode//100)
     return redirect(url_for("connexion"))
+
+@app.route('/api/sorties/<int:sortie_id>/dogs', methods=['GET'])
+def api_sortie_dogs(sortie_id):
+    if 'user_id' not in session:
+        return jsonify({'error':'Authentication required'}), 401
+    dogs = sortieServices.getMesChiensParSortie(session['user_id'], sortie_id)
+    return jsonify({'dogs': dogs}), 200

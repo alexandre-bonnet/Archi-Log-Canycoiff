@@ -11,3 +11,11 @@ def getDogList(user_id):
     for dog in dogList:
         print(dog)
     return dogList
+
+
+def deleteChien(user_id, dog_id):
+    client_id = userServices.getClientId(user_id)
+    if not chienModel.isDogOwnedByClient(dog_id, client_id):
+        return False
+    chienModel.removeDog(dog_id)
+    return True

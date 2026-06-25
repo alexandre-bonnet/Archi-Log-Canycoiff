@@ -35,5 +35,5 @@ def getSortieList(user_id):
     return sortieList
 
 def getMesChiensParSortie(user_id,Sortie_id):
-    chiensParSortie = []
-    return chiensParSortie
+    client_id = userServices.getClientId(user_id)
+    return sortieModel.getDogsForSortie(client_id, Sortie_id)
