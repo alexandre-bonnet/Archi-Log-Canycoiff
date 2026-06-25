@@ -2,6 +2,7 @@ import mysql.connector
 from flask import Flask, render_template,request,redirect,url_for,session
 import Services.userServices as userServices
 import Services.chienServices as chienServices
+import Services.sortieServices as sortieServices
 
 
 
@@ -16,7 +17,6 @@ def getStatus():
         return "Déconnexion"
     else : 
         return "Connexion"
-    return
 
 def getServerResponse(code):
     if(code==200):
@@ -125,11 +125,15 @@ def add_sortie():
         if request.method == "POST":
             date_sortie = request.form.get("date_sortie")
             chien_id = request.form.get("chien_id")
-            sortieService.addSortie(date_sortie, chien_id)
+            print("====chienId")
+            print(chien_id)
+            sortieServices.addSortie(date_sortie, chien_id)
             
-        sortieList = sortieService.getSortieList(session["user_id"])
+        sortieList = sortieServices.getSortieList(session["user_id"])
         if len(sortieList) == 0:
             text = "Aucune sortie programmée pour le moment"
-            dogList = userServices.chienServices.getDogList(session["user_id"]) 
+        dogList = chienServices.getDogList(session["user_id"]) 
+        for dog in dogList:
+            print(dog)
         return render_template("sortie.html", text=text, sorties=sortieList, chiens=dogList)
     return redirect(url_for("connexion"))

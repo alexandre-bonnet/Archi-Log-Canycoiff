@@ -48,7 +48,7 @@ def getDogList(client_id):
     for dogId in allDogIds:
         mycursor.execute("SELECT * FROM CHIEN WHERE id = %s",(dogId,))
         result = mycursor.fetchone()
-        dogList.append({'Nom':result["nom"],'Race':result["race"]})
+        dogList.append({'id':dogId,'Nom':result["nom"],'Race':result["race"]})
     mycursor.close()
     mydb.close()
     return dogList
