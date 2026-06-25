@@ -37,7 +37,26 @@
                 <input type='text' name='number' id='number'> <br>
                 <button type='submit'> envoyer </button>
             </form>
-            <p class = "code-{{codeProfile}}">{{message}}</p>
+            <p class = "code-{{codeProfile}}" id="msg">{{message}}</p>
         </main>
+        <script>
+          document.addEventListener('DOMContentLoaded', ()=>{
+            const form = document.querySelector('form');
+            form.addEventListener('submit', async (ev)=>{
+              ev.preventDefault();
+              const name = document.getElementById('name').value;
+              const number = document.getElementById('number').value;
+              try{
+                const res = await fetch('/api/clients', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name, number}), credentials:'same-origin'});
+                const json = await res.json();
+                if(res.ok && json.code === 201){
+                  window.location.href = '/espaceperso';
+                } else {
+                  document.getElementById('msg').textContent = json.message || 'Erreur';
+                }
+              }catch(err){console.error(err); alert('Erreur réseau');}
+            });
+          });
+        </script>
     </body>
 </html>

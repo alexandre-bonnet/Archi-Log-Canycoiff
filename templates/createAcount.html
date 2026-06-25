@@ -44,7 +44,29 @@
             <input type='text' name='password' id='password'> <br>
             <button type='submit'> envoyer </button>
         </form>
-        <p class = "code-{{codeProfile}}">{{message}}</p>
+        <p class = "code-{{codeProfile}}" id="msg">{{message}}</p>
     </main>
+    <script>
+      document.addEventListener('DOMContentLoaded', ()=>{
+        const form = document.querySelector('form');
+        form.addEventListener('submit', async (ev)=>{
+          ev.preventDefault();
+          const user = document.getElementById('user').value;
+          const password = document.getElementById('password').value;
+          try{
+            const res = await fetch('/api/users', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({user, password}), credentials:'same-origin'});
+            const json = await res.json();
+            const msgEl = document.getElementById('msg');
+            msgEl.textContent = json.message || 'Erreur';
+            if(res.ok && json.code === 200){
+              msgEl.className = 'code-2';
+              form.reset();
+            } else {
+              msgEl.className = 'code-4';
+            }
+          }catch(err){console.error(err); alert('Erreur réseau');}
+        });
+      });
+    </script>
 </body>
 </html>

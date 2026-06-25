@@ -49,5 +49,24 @@
                 <a href="/createAcount" id="creation">Créer un compte</a>
             </nav>
         </main>
+        <script>
+          document.addEventListener('DOMContentLoaded', ()=>{
+            const form = document.querySelector('form');
+            form.addEventListener('submit', async (ev)=>{
+              ev.preventDefault();
+              const user = document.getElementById('user').value;
+              const password = document.getElementById('password').value;
+              try{
+                const res = await fetch('/api/login', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({user, password}), credentials:'same-origin'});
+                const json = await res.json();
+                if(res.ok && json.code === 201){
+                  window.location.href = '/espaceperso';
+                } else {
+                  document.querySelector('p[class*="code-"]').textContent = json.message || 'Erreur';
+                }
+              }catch(err){console.error(err); alert('Erreur réseau');}
+            });
+          });
+        </script>
     </body>
 </html>

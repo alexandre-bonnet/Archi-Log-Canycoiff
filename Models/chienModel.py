@@ -43,14 +43,17 @@ def getAllDogIds(client_id):
 def getDogList(client_id):
     mydb = connection.connect()
     mycursor = mydb.cursor(dictionary=True)
-    allDogIds = getAllDogIds(client_id)
-    dogList = []
-    for dogId in allDogIds:
-        mycursor.execute("SELECT * FROM CHIEN WHERE id = %s",(dogId,))
-        result = mycursor.fetchone()
-        dogList.append({'id':dogId,'Nom':result["nom"],'Race':result["race"], 'Photo':result["photo"]})
+
+    mycursor.execute(
+        "SELECT nom, race, photo FROM CHIEN WHERE client_id = %s",
+        (client_id,)
+    )
+
+    dogList = mycursor.fetchall()
+
     mycursor.close()
     mydb.close()
+
     return dogList
 
 

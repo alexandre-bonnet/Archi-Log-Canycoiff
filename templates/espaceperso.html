@@ -14,14 +14,26 @@
         color: green;
       }
 
-      div {
+      /* Conteneur headers */
+      main > div:first-of-type {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         width: 100%;
       }
 
+      /* Conteneur des chiens */
+      #dog-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        width: 100%;
+      }
+
+      /* Les divs rangées passent leurs enfants directement au grid parent */
+      #dog-list > div {
+        display: contents;
+      }
+
       .item-1 {
-        grid-area: 1 / 1 / 2 / 2;
         font-size: 1.1rem;
         font-weight: 600;
         display: flex;
@@ -29,10 +41,10 @@
         align-items: center;
         border: 3px solid rgb(84, 108, 119);
         background: #c0c5d6;
+        padding: 10px;
       }
 
       .item-2 {
-        grid-area: 1 / 2 / 2 / 3;
         font-size: 1.1rem;
         font-weight: 600;
         display: flex;
@@ -41,10 +53,10 @@
         border: 3px solid rgb(84, 108, 119);
         border-left: 0px;
         background: #c0c5d6;
+        padding: 10px;
       }
 
       .item-3 {
-        grid-area: 1 / 3 / 2 / 4;
         font-size: 1.1rem;
         font-weight: 600;
         display: flex;
@@ -53,35 +65,46 @@
         border: 3px solid rgb(84, 108, 119);
         border-left: 0px;
         background: #c0c5d6;
+        padding: 10px;
       }
 
       .item-4 {
-        grid-area: 1 / 1 / 2 / 2;
         display: flex;
         justify-content: center;
         align-items: center;
         border: 3px solid rgb(84, 108, 119);
         border-top: 0px;
+        min-height: 60px;
+        padding: 10px;
       }
 
       .item-5 {
-        grid-area: 1 / 2 / 2 / 3;
         display: flex;
         justify-content: center;
         align-items: center;
         border: 3px solid rgb(84, 108, 119);
-        border: 3px solid rgb(84, 108, 119);
+        border-left: 0px;
         border-top: 0px;
+        min-height: 60px;
+        padding: 10px;
       }
 
       .item-6 {
-        grid-area: 1 / 3 / 2 / 4;
         display: flex;
         justify-content: center;
         align-items: center;
         border: 3px solid rgb(84, 108, 119);
-        border: 3px solid rgb(84, 108, 119);
+        border-left: 0px;
         border-top: 0px;
+        min-height: 120px;
+        padding: 10px;
+      }
+
+      .item-6 img {
+        max-width: 100%;
+        max-height: 110px;
+        object-fit: cover;
+        border-radius: 4px;
       }
     </style>
   </head>
@@ -106,6 +129,8 @@
         <p class="item-2">Race</p>
         <p class="item-3">Photo</p>
       </div>
+
+      <div id="dog-list">
       {% for dog in dogs %}
       <div>
         <p class="item-4">{{dog.Nom}}</p>
@@ -115,9 +140,10 @@
         </p>
       </div>
       {% endfor %}
+      </div>
 
       <p class="title">Ajouter un chien</p>
-      <form method="POST" action="/espaceperso" enctype="multipart/form-data">
+      <form id="add-dog-form" method="POST" action="/espaceperso" enctype="multipart/form-data">
         <input
           type="text" name="nom" placeholder="Nom du chien" equired/><br />
         <input type="text" name="race" placeholder="Race" required /><br />
@@ -128,6 +154,63 @@
       <nav>
         <a class="title" href="/add-sortie"> Gérer mes sorties</a>
       </nav>
+
+      <script>
+        async function renderDogs(dogs){
+          const container = document.getElementById('dog-list');
+          if(!container) return;
+          container.innerHTML = '';
+          if(!dogs || dogs.length === 0){
+            const div = document.createElement('div');
+            div.innerHTML = '<p class="item-4">-</p><p class="item-5">-</p><p class="item-6">-</p>';
+            container.appendChild(div);
+            return;
+          }
+          dogs.forEach(dog => {
+            const div = document.createElement('div');
+            const name = document.createElement('p'); name.className='item-4'; name.textContent = dog.Nom || dog.NOM || dog.nom || '-';
+            const race = document.createElement('p'); race.className='item-5'; race.textContent = dog.Race || dog.RACE || dog.race || '-';
+            const photoP = document.createElement('p'); photoP.className='item-6';
+            const img = document.createElement('img');
+            const photoSrc = dog.Photo || dog.photo || '';
+            if(photoSrc) img.src = '/static/' + photoSrc;
+            photoP.appendChild(img);
+            div.appendChild(name);
+            div.appendChild(race);
+            div.appendChild(photoP);
+            container.appendChild(div);
+          });
+        }
+
+        async function fetchDogs(){
+          try{
+            const res = await fetch('/api/dogs', {credentials: 'same-origin'});
+            if(res.ok){
+              const json = await res.json();
+              if(json.dogs) renderDogs(json.dogs);
+            }
+          }catch(e){console.error(e)}
+        }
+
+        document.addEventListener('DOMContentLoaded', ()=>{
+          fetchDogs();
+          const form = document.getElementById('add-dog-form');
+          form.addEventListener('submit', async (ev)=>{
+            ev.preventDefault();
+            const fd = new FormData(form);
+            try{
+              const r = await fetch('/api/dogs', {method: 'POST', body: fd, credentials: 'same-origin'});
+              if(r.ok){
+                await fetchDogs();
+                form.reset();
+              } else {
+                const j = await r.json();
+                alert(j.message || j.error || 'Erreur');
+              }
+            }catch(err){console.error(err)}
+          });
+        });
+      </script>
     </main>
   </body>
 </html>

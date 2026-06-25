@@ -45,16 +45,63 @@
             <p class = "code-{{codeProfile}}">{{message}}</p>
 
             <h2> Consulter vos sorties</h2>
-            <form method="POST" action="/add-sortie">
-                <select name="chien_id" required>
-                    <option value="">-- Choisis ta sortie --</option>
-                        {% for sortie in sorties %} 
-                            <option value={{sortie.id}}>
-                                {{sortie.Date}}
-                            </option>
-                        {% endfor %}
-                    </select>
-            </form>
+            <div id="sortie-list">
+              <select id="sortie-select" required>
+                <option value="">-- Choisis ta sortie --</option>
+                {% for sortie in sorties %} 
+                  <option value={{sortie.id}}>
+                    {{sortie.Date}}
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
         </main>
+        <script>
+          async function renderSorties(sorties){
+            const select = document.getElementById('sortie-select');
+            if(!select) return;
+            select.innerHTML = '<option value="">-- Choisis ta sortie --</option>';
+            if(sorties && sorties.length > 0){
+              sorties.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id || '';
+                opt.textContent = s.Date || '';
+                select.appendChild(opt);
+              });
+            }
+          }
+          
+          async function fetchSorties(){
+            try{
+              const res = await fetch('/api/sorties', {credentials:'same-origin'});
+              if(res.ok){
+                const json = await res.json();
+                if(json.sorties) renderSorties(json.sorties);
+              }
+            }catch(e){console.error(e);}
+          }
+          
+          document.addEventListener('DOMContentLoaded', ()=>{
+            fetchSorties();
+            const form = document.querySelector('form[method="POST"]');
+            if(form){
+              form.addEventListener('submit', async (ev)=>{
+                ev.preventDefault();
+                const date = form.querySelector('input[name="date_sortie"]').value;
+                const chienId = form.querySelector('select[name="chien_id"]').value;
+                try{
+                  const res = await fetch('/api/sorties', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({date_sortie:date, chien_id:chienId}), credentials:'same-origin'});
+                  const json = await res.json();
+                  const msgEl = document.querySelector('p[class*="code-"]');
+                  if(msgEl) msgEl.textContent = json.message || 'Erreur';
+                  if(res.ok){
+                    await fetchSorties();
+                    form.reset();
+                  }
+                }catch(err){console.error(err); alert('Erreur réseau');}
+              });
+            }
+          });
+        </script>
     </body>
 </html>
