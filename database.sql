@@ -26,6 +26,7 @@ CREATE TABLE `chien` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nom` varchar(100) DEFAULT NULL,
   `race` varchar(100) DEFAULT NULL,
+  `photo` varchar(225) DEFAULT NULL,
   `client_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `chien_ibfk_1` (`client_id`),
