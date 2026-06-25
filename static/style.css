@@ -85,9 +85,8 @@ header>nav>a{
 }
 
 .galerie {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px;
 }
 
