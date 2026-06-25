@@ -6,7 +6,17 @@
     <link rel="stylesheet" href="/static/style.css"> 
     <link rel="icon" type="image/x-icon" href="/static/CanyLogo.svg">
     <title>Ajouter une sortie !</title>
+    <style>
+        .code-4 {
+            color : red
+        }
+
+        .code-2 {
+            color : green
+        }
+    </style>
 </head>
+<body>
         <header>
             <a href="/">
                 <img src="/static/CanyLogo.svg" alt="logo"/>
@@ -18,22 +28,21 @@
                 <a href="/apropos"> Le salon</a>
             </nav>
         </header>
-    <body>
-        <h2> Ajouter une sortie !</h2>
-        <form method="POST" action="/add-sortie">
-            <input type="date" name="date_sortie" placeholder="Date de la sortie" required>
-            <select name="chien_id" required> #choisir chien 
-                <option value="">-- Choisis ton chien --</option>
-                    {% for c in chiens %} 
-                        <option value={{c.id}}>
-                            {{c.Nom}}
-                        </option>
-                    {% endfor %}
-                </select>
-            <button type="submit">Ajouter une sortie !</button>
-
-
-        </form>
-        <p class = "code-{{codeProfile}}">{{message}}</p>
+        <main>
+            <h2> Ajouter une sortie !</h2>
+            <form method="POST" action="/add-sortie">
+                <input type="date" name="date_sortie" placeholder="Date de la sortie" required>
+                <select name="chien_id" required> #choisir chien 
+                    <option value="">-- Choisis ton chien --</option>
+                        {% for c in chiens %} 
+                            <option value={{c.id}}>
+                                {{c.Nom}}
+                            </option>
+                        {% endfor %}
+                    </select>
+                <button type="submit">Ajouter une sortie !</button>
+            </form>
+            <p class = "code-{{codeProfile}}">{{message}}</p>
+        </main>
     </body>
 </html>

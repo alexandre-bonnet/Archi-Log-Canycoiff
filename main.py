@@ -35,6 +35,10 @@ def getServerResponse(code):
         return "Password is wrong"
     elif(code ==405):
         return "Name too long (12 characters max)"
+    elif(code ==407):
+        return "Date has already passed"
+    elif(code ==408):
+        return "Date too far in the future"
     else :
         return ""
 
@@ -120,6 +124,8 @@ def espaceperso():
 
 @app.route("/add-sortie", methods=["GET", "POST"])
 def add_sortie():
+    serverCode = 0
+    serverResponse = ""
     if "user_id" in session:
         text = "Liste des sorties programmées :"
         if request.method == "POST":
@@ -127,13 +133,16 @@ def add_sortie():
             chien_id = request.form.get("chien_id")
             print("====chienId")
             print(chien_id)
-            sortieServices.addSortie(date_sortie, chien_id)
+            serverCode = sortieServices.checkDate(date_sortie)
+            if(serverCode==203):
+                sortieServices.addSortie(date_sortie, chien_id)
             
         sortieList = sortieServices.getSortieList(session["user_id"])
         if len(sortieList) == 0:
             text = "Aucune sortie programmée pour le moment"
         dogList = chienServices.getDogList(session["user_id"]) 
-        for dog in dogList:
-            print(dog)
-        return render_template("sortie.html", text=text, sorties=sortieList, chiens=dogList)
+        serverResponse = getServerResponse(serverCode)
+        return render_template("sortie.html",statusHtml=getStatus(),
+                               text=text, sorties=sortieList, chiens=dogList,
+                               message = serverResponse,codeProfile = serverCode//100)
     return redirect(url_for("connexion"))
