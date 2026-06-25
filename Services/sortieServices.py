@@ -1,27 +1,27 @@
 import Models.sortieModel as sortieModel
 import Services.userServices as userServices
 from datetime import date,timedelta
-current = date.today()
+currentDate = date.today()
 
 def toDate(pDateString):
     pDateTable = pDateString.split('-')
-    print("===========Current")
-    print(current)
-    print("===========DateTable")
-    print(pDateTable)
     return date(int(pDateTable[0]),int(pDateTable[1]),int(pDateTable[2]))
 def checkDate(pDateString):
     vDate = toDate(pDateString)
     print(vDate)
-    if vDate<current:
+    if vDate<currentDate:
         return 407
-    if vDate > current+timedelta(days=365):
+    if vDate > currentDate+timedelta(days=365):
         return 408
     return 203
 
 def addSortie(pDate_Sortie, pChien_id):
-    sortieModel.addSortie(pDate_Sortie, pChien_id)
-    print("sortie added")
+    sortie_id = sortieModel.getSortieId(pDate_Sortie)
+    if (sortie_id is None):
+        sortieModel.addSortie(pDate_Sortie)
+        print("sortie added")
+        sortie_id = sortieModel.getSortieId(pDate_Sortie)
+    sortieModel.addDogToSortie(pChien_id,sortie_id)
     return 203
 
 def getSortieList(user_id):

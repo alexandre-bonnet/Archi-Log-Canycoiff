@@ -137,7 +137,8 @@ def add_sortie():
             if(serverCode==203):
                 sortieServices.addSortie(date_sortie, chien_id)
             
-        sortieList = sortieServices.getSortieList(session["user_id"])
+        sortieList=[]
+        #sortieList = sortieServices.getSortieList(session["user_id"])
         if len(sortieList) == 0:
             text = "Aucune sortie programmée pour le moment"
         dogList = chienServices.getDogList(session["user_id"]) 

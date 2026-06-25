@@ -1,15 +1,11 @@
 import mysql.connector 
 import connection 
 
-def addSortie(pDate_Sortie, pChien_id):
+def addSortie(pDate_Sortie):
     mydb = connection.connect()
     mycursor = mydb.cursor()
     
-    mycursor.execute(
-        "INSERT INTO sortie(date_sortie, chien_id) VALUES (%s, %s)",
-        (pDate_Sortie, pChien_id)
-    )
-
+    mycursor.execute("INSERT INTO sortie(date_sortie) VALUES (%s)",(pDate_Sortie,))
     mydb.commit()
     mycursor.close()
     mydb.close()
@@ -40,3 +36,25 @@ def getSortieList(client_id):
     mycursor.close()
     mydb.close()
     return sortieList
+
+def addDogToSortie(pChien_id,sortie_id):
+    mydb = connection.connect()
+    mycursor = mydb.cursor()
+    mycursor.execute(
+        "INSERT INTO faire(chien_id, sortie_id) VALUES (%s, %s)",(pChien_id, sortie_id))
+    mydb.commit()
+    mycursor.close()
+    mydb.close()
+    return 200
+
+def getSortieId(pDate_Sortie):
+    mydb = connection.connect()
+    mycursor = mydb.cursor(dictionary=True)
+    mycursor.execute("SELECT * FROM SORTIE WHERE date_sortie = %s",(pDate_Sortie,))
+    result = mycursor.fetchone()
+    if result is None:
+        print("===========Sortie Don't Exist")
+        return None
+    id = result["id"]
+    mycursor.close()
+    return id
